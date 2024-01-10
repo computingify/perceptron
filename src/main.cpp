@@ -1,5 +1,8 @@
 #include <iostream>
 #include "perceptron.h"
+#include "matplotlibcpp.h"
+
+namespace plt = matplotlibcpp;
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -11,6 +14,9 @@ int main() {
     int output = p.guess(inputs);
 
     std::cout << "guess value : " << output << std::endl;
+
+    plt::plot({ 1,3,2,4 });
+    plt::show();
 
     return 0;
 }

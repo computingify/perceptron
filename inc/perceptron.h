@@ -2,10 +2,11 @@
 #define PERCEPTRON_H
 
 #include <vector>
+#include <cstddef>  // Include this header for size_t
 
 class perceptron {
 public:
-    perceptron(size_t entrySize);
+    perceptron(std::size_t entrySize);
 
     void print() const;
 
