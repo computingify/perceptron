@@ -8,6 +8,8 @@ class perceptron {
 public:
     perceptron(std::size_t entrySize);
 
+    virtual ~perceptron() = default;
+
     void print() const;
 
     int guess(std::vector<float>& inputs);
