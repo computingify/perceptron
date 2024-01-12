@@ -9,6 +9,10 @@ public:
 
     virtual ~trainer() = default;
 
+    inline float getX() { return x; };
+    inline float getY() { return y; };
+    inline int getLabel() { return label; };
+
 private:
     float x;
     float y;

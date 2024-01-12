@@ -7,6 +7,10 @@ trainer::trainer(unsigned int width, unsigned int height) {
     x = r.get();
     y = r.get();
 
-    std::cout << "trainer value : " << x << " | " << y << std::endl;
+    label = -1;
 
+    std::cout << "trainer value : " << x << " | " << y << std::endl;
+    if (x > y) {
+        label = 1;
+    }
 }
