@@ -11,7 +11,7 @@ public:
     float get();
 
 private:
-    std::mt19937 gen;
+    std::random_device rd;
     std::uniform_real_distribution<float> dist;
 };
 #endif // RANDOM_FLOAT_H
