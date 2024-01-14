@@ -2,8 +2,9 @@
 #include <iostream>
 #include "randomFloat.h"
 
-perceptron::perceptron(size_t entrySize) :
-    mWeights(entrySize)
+perceptron::perceptron(size_t entrySize, float errorPonderation) :
+    mWeights(entrySize),
+    mErrorPonderation(errorPonderation)
 {
     randomFloat r(-1.0, 1.0);
 
@@ -27,7 +28,7 @@ int perceptron::guess(std::vector<float>& inputs) {
     float sum(0);
 
     if (inputs.size() < mWeights.size()) {
-        std::cout << "Wrong data size" << std::endl;
+        std::cout << __func__ << " Wrong data size" << std::endl;
         return 0;
     }
 
@@ -44,4 +45,17 @@ int perceptron::sign(float n) {
         return 1;
     }
     return -1;
+}
+
+void perceptron::tune(const std::vector<float>& inputs, const int error) {
+    if (inputs.size() < mWeights.size()) {
+        std::cout << __func__ << " Wrong data size" << std::endl;
+        return;
+    }
+
+    // Compute the error to tune each input weight
+    for (unsigned int i = 0; i < mWeights.size(); i++) {
+        // Apply error formula
+        mWeights[i] += inputs[i] * error * mErrorPonderation;
+    }
 }

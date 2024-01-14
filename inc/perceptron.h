@@ -6,7 +6,7 @@
 
 class perceptron {
 public:
-    perceptron(std::size_t entrySize);
+    perceptron(std::size_t entrySize, float errorPonderation);
 
     virtual ~perceptron() = default;
 
@@ -14,12 +14,15 @@ public:
 
     int guess(std::vector<float>& inputs);
 
+    void tune(const std::vector<float>& inputs, const int error);
+
 protected:
 
     int sign(float n);
 
 private:
     std::vector<float> mWeights;
+    float mErrorPonderation;
 
 };
 #endif // PERCEPTRON_H
