@@ -9,7 +9,7 @@ perceptron::perceptron(size_t entrySize, float errorPonderation) :
     randomFloat r(-1.0, 1.0);
 
     // Initialize the vector with random values
-    for (size_t i = 0; i < entrySize; ++i) {
+    for (size_t i = 0; i < entrySize; i++) {
         mWeights[i] = r.get();
     }
 }
@@ -28,12 +28,12 @@ int perceptron::guess(std::vector<float>& inputs) {
     float sum(0);
 
     if (inputs.size() < mWeights.size()) {
-        std::cout << __func__ << " Wrong data size" << std::endl;
+        std::cout << __func__ << " Wrong data size: input = " << inputs.size() << " | weight = " << mWeights.size() << std::endl;
         return 0;
     }
 
     for (unsigned int i = 0; i < mWeights.size(); i++) {
-        sum += mWeights[i] * inputs[i];
+        sum += mWeights.at(i) * inputs.at(i);
     }
 
     return sign(sum);
@@ -41,6 +41,7 @@ int perceptron::guess(std::vector<float>& inputs) {
 
 // Activation method
 int perceptron::sign(float n) {
+    std::cout << "sum = " << n << std::endl;
     if (n >= 0) {
         return 1;
     }
