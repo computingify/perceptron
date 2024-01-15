@@ -1,4 +1,4 @@
-build/
-**/build/
-**/examples
+build/**
+**/build/**
+**/examples/**
 **.pdf

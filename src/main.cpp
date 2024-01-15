@@ -15,13 +15,14 @@ int argumentGetInt(const std::string& argv) {
     int intValue(0);
     try {
         intValue = std::stoi(argv);
-        std::cout << "Converted integer value: " << intValue << std::endl;
     }
     catch (const std::invalid_argument& e) {
         std::cerr << "Invalid argument: " << e.what() << std::endl;
+        exit(1);
     }
     catch (const std::out_of_range& e) {
         std::cerr << "Out of range: " << e.what() << std::endl;
+        exit(1);
     }
 
     return intValue;
@@ -29,40 +30,47 @@ int argumentGetInt(const std::string& argv) {
 
 int main(int argc, char* argv[]) {
     unsigned int numberOfEntry(2);  // perceptron input number
-    double width(200);              // the width of the plot => the maximum input value for X, Y
-    float errorCoef(0.1);           // the learning rate
+    double width(100);              // the width of the plot => the maximum input value for X, Y
+    float errorCoef(0.01);           // the learning rate
     // std::vector<float> inputs;
 
     int numberOfElement(argumentGetInt(argv[1]));       // dot number in my experience
-    std::cout << "NumberOfElement " << ": " << numberOfElement << std::endl;
 
     perceptron p(numberOfEntry, errorCoef);
 
     // Draw a line to separate positive and negative value
-    plt::plot({ 0, width }, { 0, width }, "b-");
+    plt::plot({ -width, width }, { -width, width }, "b-");
+
+    // Prepare raw input value
+    std::vector<std::pair<float, float>> coordinates;
+    std::vector<int> label;
+    for (int i = 0; i < numberOfElement; i++) {
+        trainer t(-width, width);
+        coordinates.push_back(std::make_pair(t.getX(), t.getY()));
+        label.push_back(t.getLabel());
+    }
 
     // My perceptron in trainning
     for (int i = 0; i < numberOfElement; i++) {
         p.print();
 
-        trainer t(-width, width);
         // build a vector with X and Y as input for my perceptron
-        std::vector<float> coordinate(t.getX(), t.getY());
+        std::vector<float> coordinate{ coordinates[i].first, coordinates[i].second };
         // run my perceptron
         int answer = p.guess(coordinate);
         // Calculate the error according to perceptron result
-        int error = errorProcessing(answer, t.getLabel());
-        std::cout << __func__ << " X = " << t.getX() << " | Y = " << t.getY() << std::endl;
-        std::cout << __func__ << " answer = " << answer << " | label = " << t.getLabel() << " | error value : " << error << std::endl;
+        int error = errorProcessing(answer, label[i]);
+        std::cout << __func__ << " X = " << coordinates[i].first << " | Y = " << coordinates[i].second << std::endl;
+        std::cout << __func__ << " answer = " << answer << " | label = " << label[i] << " | error value : " << error << std::endl;
 
         // Finally train the perceptron
         p.tune(coordinate, error);
 
         std::string dotColor("og");
-        if (0 != error) {
+        if (answer > 0) {
             dotColor = "or";
         }
-        plt::plot({ t.getX() }, { t.getY() }, dotColor);
+        plt::plot({ coordinates[i].first }, { coordinates[i].second }, dotColor);
     }
     plt::save("../result.pdf"); // save the figure
     plt::show();
