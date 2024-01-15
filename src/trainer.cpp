@@ -9,7 +9,7 @@ trainer::trainer(int width, int height) {
     y = r.get();
     count++;
 
-    std::cout << "trainer value " << count << " : " << x << " | " << y << std::endl;
+    // std::cout << "trainer value " << count << " : " << x << " | " << y << std::endl;
 
     label = -1;
     if (y > f(x)) {

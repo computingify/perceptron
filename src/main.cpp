@@ -28,19 +28,7 @@ int argumentGetInt(const std::string& argv) {
     return intValue;
 }
 
-int main(int argc, char* argv[]) {
-    unsigned int numberOfEntry(2);  // perceptron input number
-    double width(100);              // the width of the plot => the maximum input value for X, Y
-    float errorCoef(0.01);           // the learning rate
-    // std::vector<float> inputs;
-
-    int numberOfElement(argumentGetInt(argv[1]));       // dot number in my experience
-
-    perceptron p(numberOfEntry, errorCoef);
-
-    // Draw a line to separate positive and negative value
-    plt::plot({ -width, width }, { -width, width }, "b-");
-
+void training(double width, int numberOfElement, perceptron& p) {
     // Prepare raw input value
     std::vector<std::pair<float, float>> coordinates;
     std::vector<int> label;
@@ -52,7 +40,7 @@ int main(int argc, char* argv[]) {
 
     // My perceptron in trainning
     for (int i = 0; i < numberOfElement; i++) {
-        p.print();
+        // p.print();
 
         // build a vector with X and Y as input for my perceptron
         std::vector<float> coordinate{ coordinates[i].first, coordinates[i].second };
@@ -60,8 +48,8 @@ int main(int argc, char* argv[]) {
         int answer = p.guess(coordinate);
         // Calculate the error according to perceptron result
         int error = errorProcessing(answer, label[i]);
-        std::cout << __func__ << " X = " << coordinates[i].first << " | Y = " << coordinates[i].second << std::endl;
-        std::cout << __func__ << " answer = " << answer << " | label = " << label[i] << " | error value : " << error << std::endl;
+        // std::cout << __func__ << " X = " << coordinates[i].first << " | Y = " << coordinates[i].second << std::endl;
+        // std::cout << __func__ << " answer = " << answer << " | label = " << label[i] << " | error value : " << error << std::endl;
 
         // Finally train the perceptron
         p.tune(coordinate, error);
@@ -72,7 +60,47 @@ int main(int argc, char* argv[]) {
         }
         plt::plot({ coordinates[i].first }, { coordinates[i].second }, dotColor);
     }
-    plt::save("../result.pdf"); // save the figure
+}
+
+void run(double width, int numberOfElement, perceptron& p) {
+    for (int i = 0; i < numberOfElement * 2; i++) {
+        randomFloat r(-width, width);
+        // build a vector with X and Y as input for my perceptron
+        std::vector<float> coordinate{ r.get(), r.get() };
+        // run my perceptron
+        int answer = p.guess(coordinate);
+
+        std::string dotColor("og");
+        if (answer > 0) {
+            dotColor = "or";
+        }
+        plt::plot({ coordinate[0] }, { coordinate[1] }, dotColor);
+    }
+}
+
+int main(int argc, char* argv[]) {
+    unsigned int numberOfEntry(2);  // perceptron input number
+    double width(100);              // the width of the plot => the maximum input value for X, Y
+    float errorCoef(0.01);           // the learning rate
+
+    int numberOfElement(argumentGetInt(argv[1]));       // dot number in my experience
+
+    perceptron p(numberOfEntry, errorCoef);
+
+
+    // My perceptron in trainning
+    // Draw a line to separate both value (all green should be over the line and red under)
+    plt::plot({ -width, width }, { -width, width }, "b-");
+    training(width, numberOfElement, p);
+
+    plt::save("../training.png"); // save the figure
+    plt::show();
+
+    // My perceptron in ACTION
+    plt::plot({ -width, width }, { -width, width }, "b-");
+    run(width, numberOfElement, p);
+
+    plt::save("../result.png"); // save the figure
     plt::show();
 
     return 0;

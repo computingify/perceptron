@@ -41,7 +41,7 @@ int perceptron::guess(std::vector<float>& inputs) {
 
 // Activation method
 int perceptron::sign(float n) {
-    std::cout << "sum = " << n << std::endl;
+    // std::cout << "sum = " << n << std::endl;
     if (n > 0) {
         return 1;
     }
