@@ -12,6 +12,7 @@ To compile those sources:
       mkdir matplotlib-cpp
       cd matplotlib-cpp
       git clone git@github.com:lava/matplotlib-cpp.git
+      brew install python-matplotlib
 
 * your source code directory should look like:
 

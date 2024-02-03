@@ -87,9 +87,9 @@ int main(int argc, char* argv[]) {
 
     perceptron p(numberOfEntry, errorCoef);
 
-
     // My perceptron in trainning
     // Draw a line to separate both value (all green should be over the line and red under)
+    plt::title("Training Resutl");
     plt::plot({ -width, width }, { -width, width }, "b-");
     training(width, numberOfElement, p);
 
@@ -100,6 +100,7 @@ int main(int argc, char* argv[]) {
     plt::plot({ -width, width }, { -width, width }, "b-");
     run(width, numberOfElement, p);
 
+    plt::title("Run on random data Resutl");
     plt::save("../result.png"); // save the figure
     plt::show();
 
